@@ -1,16 +1,9 @@
 package com.unithon.openplaces;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -30,7 +23,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
@@ -50,10 +42,11 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.naver.speech.clientapi.SpeechConfig;
+import com.squareup.picasso.Picasso;
 import com.unithon.openplaces.network.HttpFactory;
+import com.unithon.openplaces.network.response.ImagesInfo;
 import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
@@ -63,7 +56,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -631,6 +623,11 @@ public class MapsActivity extends FragmentActivity implements
         String id = marker.getId();
 
         SearchResponse response = placeInfoMap.get(id);
+
+        ImageView image = (ImageView) findViewById(R.id.bottomsheet_image);
+        List<ImagesInfo> imgUrls = response.getImages();
+        if(!imgUrls.isEmpty())
+            Picasso.with(this).load(response.getImages().get(0).getLink()).into(image);
 
         PlaceNameTextView.setText(response.getTitle());
         PlacePhoneNumTextView.setText(response.getTel());
