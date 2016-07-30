@@ -9,6 +9,10 @@
 
         <!-- enable window content transitions -->
         <item name="android:windowContentTransitions">true</item>
+
+        <!-- shared element transitions -->
+        <item name="android:windowSharedElementEnterTransition">@transition/app_bar_transform</item>
+        <item name="android:windowSharedElementExitTransition">@transition/app_bar_transform</item>
     </style>
 
     <style name="FAB">
