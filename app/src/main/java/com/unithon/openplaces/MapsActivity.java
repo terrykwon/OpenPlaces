@@ -1,5 +1,6 @@
 package com.unithon.openplaces;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -69,6 +70,10 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //check Manifest uses-permissions is on
+        checkPermissions();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -432,5 +437,56 @@ public class MapsActivity extends FragmentActivity implements
                 activity.handleMessage(msg);
             }
         }
+    }
+
+    private boolean checkPermissions() {
+        int res = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("RECORD_AUDIO","ok");
+        } else {
+            Log.e("RECORD_AUDIO","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("CALL_PHONE","ok");
+        } else {
+            Log.e("CALL_PHONE","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("WRITE_EXTERNAL_STORAGE","ok");
+        } else {
+            Log.e("WRITE_EXTERNAL_STORAGE","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("ACCESS_COARSE_LOCATION","ok");
+        } else {
+            Log.e("ACCESS_COARSE_LOCATION","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("ACCESS_FINE_LOCATION","ok");
+        } else {
+            Log.e("ACCESS_FINE_LOCATION","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("INTERNET","ok");
+        } else {
+            Log.e("INTERNET","NOT OK");
+        }
+
+        return true;
     }
 }
