@@ -21,7 +21,7 @@ public class SearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         AutoCompleteTextView searchText = (AutoCompleteTextView) findViewById(R.id.toolbar_search);
-        String[] countries = {"식당", "네일아트", "가나다", "식식식", "마포구청"};
+        String[] countries = getResources().getStringArray(R.array.category);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
         searchText.setAdapter(adapter);
         searchText.setThreshold(1);
