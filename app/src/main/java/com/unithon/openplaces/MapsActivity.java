@@ -15,9 +15,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -117,6 +120,19 @@ public class MapsActivity extends FragmentActivity implements
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
         searchText.setAdapter(adapter);
         searchText.setThreshold(1);
+
+        // enter
+        searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    Log.d("test : ", "testtest");
+                    Toast.makeText(MapsActivity.this, "testtest", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         // set custom animation
         getWindow().setExitTransition(null);

@@ -46,6 +46,8 @@
                     android:gravity="left"
                     android:hint="밤마실 지도 검색"
                     android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:singleLine="true"
                     android:background="@android:color/transparent"
                     android:textSize="18sp"/>
             </RelativeLayout>
