@@ -1,10 +1,17 @@
 package com.unithon.openplaces;
 
 import android.*;
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,6 +25,7 @@ public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private FloatingActionButton mFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +35,27 @@ public class MapsActivity extends FragmentActivity implements
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mFab = (FloatingActionButton) findViewById(R.id.FAB);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                Intent intent = new Intent(getBaseContext(), SampleSearchActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
+
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
+                Intent intent = new Intent(MapsActivity.this, SampleSearchActivity.class);
+                startActivity(intent, options.toBundle());
+            }
+        });
+
+        // set custom animation
+        Transition exitTrans = new Explode();
+        getWindow().setExitTransition(exitTrans);
+
+        Transition reenterTrans = new Slide();
+        getWindow().setReenterTransition(reenterTrans);
     }
 
 
