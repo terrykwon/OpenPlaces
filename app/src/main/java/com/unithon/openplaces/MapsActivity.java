@@ -49,6 +49,8 @@ public class MapsActivity extends FragmentActivity implements
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
+        // Remove directions, show in map button at bottom.
+        mMap.getUiSettings().setMapToolbarEnabled(false);
         enableMyLocation();
     }
 
