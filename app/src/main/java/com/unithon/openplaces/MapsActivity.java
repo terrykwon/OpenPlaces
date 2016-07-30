@@ -359,6 +359,7 @@ public class MapsActivity extends FragmentActivity implements
 
     //phone call
     private void call(String phoneNumber) {
+        phoneNumber = phoneNumber.replaceAll("-","");
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
         try {
             startActivity(intent);

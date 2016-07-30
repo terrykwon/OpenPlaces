@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class SearchResponse {
     // titles
-    public String title;
+    private String title;
     private String tel;
     private String address;
     private List<ImagesInfo> images = new ArrayList<>();
@@ -17,8 +17,8 @@ public class SearchResponse {
     private long mapX;
     private long mapY;
     // map
-    public double lat;
-    public double lng;
+    private double lat;
+    private double lng;
 
     private String category;
     private long closeAt;
@@ -67,5 +67,61 @@ public class SearchResponse {
     }
     public String getDescription() {
         return description;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setImages(List<ImagesInfo> images) {
+        this.images = images;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setMapX(long mapX) {
+        this.mapX = mapX;
+    }
+
+    public void setMapY(long mapY) {
+        this.mapY = mapY;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCloseAt(long closeAt) {
+        this.closeAt = closeAt;
+    }
+
+    public void setOpenAt(long openAt) {
+        this.openAt = openAt;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
