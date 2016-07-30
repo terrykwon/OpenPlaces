@@ -58,17 +58,15 @@ public class MapsActivity extends FragmentActivity implements
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
                 Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
-                startActivity(intent);
+                startActivity(intent, options.toBundle());
             }
         });
 
         // set custom animation
-        Transition exitTrans = new Explode();
-        getWindow().setExitTransition(exitTrans);
-
-        Transition reenterTrans = new Slide();
-        getWindow().setReenterTransition(reenterTrans);
+        getWindow().setExitTransition(null);
+        getWindow().setReenterTransition(null);
     }
 
 
