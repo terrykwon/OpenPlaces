@@ -224,12 +224,8 @@ public class MapsActivity extends FragmentActivity implements
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        mMap.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Sydney")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
-                .infoWindowAnchor(0.5f, 0.5f));
+        // sample markers
+        generateSampleMarkers();
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -254,6 +250,53 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.setMyLocationEnabled(true);
             }
         }
+    }
+
+    //debug
+    private void generateSampleMarkers() {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.5, 126.9))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.51, 126.92))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.52, 126.91))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.15, 126.93))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.54, 126.93))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.56, 126.96))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(37.57, 126.92))
+                .title("Seoul")
+                .snippet("Population: 4,627,300")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_purple))
+                .infoWindowAnchor(0.5f, 0.5f));
+
+
     }
 
 
