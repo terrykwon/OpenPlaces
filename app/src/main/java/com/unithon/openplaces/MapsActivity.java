@@ -1,5 +1,13 @@
 package com.unithon.openplaces;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
@@ -22,9 +30,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
@@ -40,6 +50,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.naver.speech.clientapi.SpeechConfig;
 import com.unithon.openplaces.network.HttpFactory;
 import com.unithon.openplaces.network.response.SearchResponse;
@@ -51,6 +63,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -81,8 +95,7 @@ public class MapsActivity extends FragmentActivity implements
     private AutoCompleteTextView searchText;
 
     // Result of query.
-    public ArrayList<SearchResponse> responses;
-
+    private Map<String, SearchResponse> placeInfoMap = Maps.newHashMap();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,6 +169,14 @@ public class MapsActivity extends FragmentActivity implements
                                                  @Override
                                                  public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                                                      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                                         zoomToMyLocation();
+                                                         getSupportFragmentManager().popBackStack();
+                                                         STATE = STATE_VIEWING_MAP;
+//                                                         getWindow().setSoftInputMode(
+//                                                                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+//                                                         );
+                                                         hideKeyboard(MapsActivity.this);
+
                                                          String title = searchText.getText().toString();
                                                          String region = "상암동";
                                                          Location location = mMap.getMyLocation();
@@ -176,6 +197,7 @@ public class MapsActivity extends FragmentActivity implements
                                                                  Log.d("search error:", " search error");
                                                              }
                                                          });
+
                                                          return true;
                                                      }
                                                      return false;
@@ -234,16 +256,27 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        //Find the currently focused view, so we can grab the correct window token from it.
+        View view = activity.getCurrentFocus();
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
     private void darkenToolbarColor() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
         TextView textView = (TextView) findViewById(R.id.StoreName);
 
         ObjectAnimator tabColorFade;
-            tabColorFade = ObjectAnimator.ofObject(
-                    layout, "backgroundColor",
-                    new ArgbEvaluator(),
-                    ContextCompat.getColor(this, R.color.white),
-                    ContextCompat.getColor(this, R.color.colorPrimary));
+        tabColorFade = ObjectAnimator.ofObject(
+                layout, "backgroundColor",
+                new ArgbEvaluator(),
+                ContextCompat.getColor(this, R.color.white),
+                ContextCompat.getColor(this, R.color.colorPrimary));
 
         tabColorFade.setDuration(1000);
         tabColorFade.start();
@@ -344,38 +377,43 @@ public class MapsActivity extends FragmentActivity implements
             LatLng latLng = new LatLng(r.getLat(), r.getLng());
             String status = r.getStatus();
             Long timeMillis = r.getCloseAt();
+            Marker marker = null;
+
+            if(status == null) {
+                continue;
+            }
 
 
-            if (status != null) {
-                if (status.equals("OPEN")) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(r.getTitle())
-                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                            .infoWindowAnchor(0.5f, 0.5f));
-                } else if (status.equals("BEFORE_ONE_HOUR")){
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(r.getTitle())
-                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
-                            .infoWindowAnchor(0.5f, 0.5f));
-                } else if (status.equals("CLOSE")) {
-                    mMap.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title(r.getTitle())
-                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                            .infoWindowAnchor(0.5f, 0.5f));
-                }
+            if (status.equals("OPEN")) {
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(r.getTitle())
+                        .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
+                        .infoWindowAnchor(0.5f, 0.5f));
+            } else if (status.equals("BEFORE_ONE_HOUR")){
+                marker = mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(r.getTitle())
+                        .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
+                        .infoWindowAnchor(0.5f, 0.5f));
+            } else if (status.equals("CLOSE")) {
+                marker =   mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(r.getTitle())
+                        .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
+                        .infoWindowAnchor(0.5f, 0.5f));
             } else {
-                mMap.addMarker(new MarkerOptions()
+                marker =  mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(r.getTitle())
                         .snippet("정보없음")
                         .infoWindowAnchor(0.5f, 0.5f));
             }
+
+            placeInfoMap.put(marker.getId(), r);
 
 
         }
@@ -431,7 +469,7 @@ public class MapsActivity extends FragmentActivity implements
                 location.getLongitude());
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
-                12));
+                14));
     }
 
 
@@ -589,6 +627,15 @@ public class MapsActivity extends FragmentActivity implements
     @Override
     public boolean onMarkerClick(Marker marker) {
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        String id = marker.getId();
+
+        SearchResponse response = placeInfoMap.get(id);
+
+        PlaceNameTextView.setText(response.getTitle());
+        PlacePhoneNumTextView.setText(response.getTel());
+        PlaceAddressTextView.setText(response.getAddress());
+        PlaceOpenTextView.setText(response.getStatus());
         return false;
     }
 
