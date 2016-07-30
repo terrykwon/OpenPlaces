@@ -7,7 +7,8 @@ import java.util.List;
  * Created by choi on 2016-07-30.
  */
 public class SearchResponse {
-    private String title;
+    // titles
+    public String title;
     private String tel;
     private String address;
     private List<ImagesInfo> images = new ArrayList<>();
@@ -15,6 +16,10 @@ public class SearchResponse {
     private String link;
     private long mapX;
     private long mapY;
+    // map
+    public double lat;
+    public double lng;
+
     private String category;
     private long closeAt;
     private long openAt;
@@ -44,6 +49,12 @@ public class SearchResponse {
     }
     public long getMapY() {
         return mapY;
+    }
+    public double getLat(){
+        return lat;
+    }
+    public double getLng() {
+        return lng;
     }
     public String getCategory() {
         return category;

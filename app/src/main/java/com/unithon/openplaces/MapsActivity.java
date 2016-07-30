@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -37,11 +38,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.naver.speech.clientapi.SpeechConfig;
+import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
 import com.unithon.openplaces.speech.SampleSpeechActivity;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback {
@@ -59,6 +62,9 @@ public class MapsActivity extends FragmentActivity implements
     private static int STATE = STATE_VIEWING_MAP;
 
     private AutoCompleteTextView searchText;
+
+    // Result of query.
+    public ArrayList<SearchResponse> responses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +181,6 @@ public class MapsActivity extends FragmentActivity implements
                 }
             }
         });
-
     }
 
     private void initializeBottomSheet() {
@@ -217,6 +222,26 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    // To be called when search button is pressed. Returns an ArrayList of responses.
+    private ArrayList<SearchResponse> search() {
+        ArrayList<SearchResponse> responses = new ArrayList<>();
+        SearchResponse sr1 = new SearchResponse();
+
+        return responses;
+    }
+
+    private void renderMarkers(ArrayList<SearchResponse> responses) {
+        for (SearchResponse r : responses) {
+            LatLng latLng = new LatLng(r.getLat(), r.getLng());
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(r.getTitle())
+                    .snippet("Population: 4,627,300")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
+                    .infoWindowAnchor(0.5f, 0.5f));
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (STATE == STATE_SEARCHING) {
@@ -253,6 +278,12 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
+
+        //debug
+        ArrayList<SearchResponse> responses = generateSampleMarkers();
+        renderMarkers(responses);
+
+
     }
 
     private void zoomToMyLocation() {
@@ -284,53 +315,57 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     //debug
-    private void generateSampleMarkers() {
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.5, 126.9))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.51, 126.92))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.52, 126.91))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.15, 126.93))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.54, 126.93))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.56, 126.96))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.57, 126.92))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                .infoWindowAnchor(0.5f, 0.5f));
+    private ArrayList<SearchResponse> generateSampleMarkers() {
+        ArrayList<SearchResponse> responses = new ArrayList<>();
+
+        SearchResponse s1 = new SearchResponse();
+        s1.lat = 37.5;
+        s1.lng = 126.8;
+        s1.title = "s1";
+
+        responses.add(s1);
+
+        SearchResponse s2 = new SearchResponse();
+        s2.lat = 37.521;
+        s2.lng = 126.81;
+        s2.title = "s2";
+
+        responses.add(s2);
 
 
+        SearchResponse s3 = new SearchResponse();
+        s3.lat = 37.552;
+        s3.lng = 126.81;
+        s3.title = "s3";
+
+        responses.add(s3);
+
+        SearchResponse s4 = new SearchResponse();
+        s4.lat = 37.553;
+        s4.lng = 126.81;
+        s4.title = "s4";
+
+        responses.add(s4);
+
+        SearchResponse s5 = new SearchResponse();
+        s5.lat = 37.557;
+        s5.lng = 126.81;
+        s5.title = "s5";
+
+        responses.add(s5);
+
+        return responses;
     }
 
-
+    //phone call
+    private void call(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        try {
+            startActivity(intent);
+        } catch (Exception ex) {
+            Toast.makeText(this,"통화가 안돠용",Toast.LENGTH_LONG).show();
+        }
+    }
 
 
 //=====================ookoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
