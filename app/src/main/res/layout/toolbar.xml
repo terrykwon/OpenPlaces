@@ -9,32 +9,34 @@
     app:elevation="0dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
+    android:paddingLeft="0dp"
     android:paddingRight="16dp">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:background="@android:color/white">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:background="@android:color/white">
+
+                <AutoCompleteTextView
+                    android:id="@+id/toolbar_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="left"
+                    android:hint="OpenPlaces 지도 검색"
+                    android:background="@android:color/transparent"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 
-        <AutoCompleteTextView
-            android:id="@+id/toolbar_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="left"
-            android:hint="OpenPlaces 지도 검색"
-            android:background="@android:color/transparent"
-            android:textSize="18sp"/>
 
-    </RelativeLayout>
 </android.support.design.widget.AppBarLayout>
