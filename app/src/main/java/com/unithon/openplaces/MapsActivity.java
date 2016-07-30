@@ -148,9 +148,10 @@ public class MapsActivity extends FragmentActivity implements
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
-        mMap.setOnMarkerClickListener(new CustomMarkerClickListener());
+        mMap.setOnMarkerClickListener(new CustomMarkerClickListener(mBottomSheetBehavior));
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
+        mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
     }
 
 
