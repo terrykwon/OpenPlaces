@@ -6,7 +6,7 @@
     android:orientation="vertical"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     app:behavior_peekHeight="68dp"
-    android:background="@android:color/holo_green_light">
+    android:background="@android:color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,45 +15,92 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="68dp"
             android:gravity="center_vertical"
-            android:text="Store Name"
-            android:textSize="32dp"
-            android:padding="10dp"
+            android:text="킨코스코리아 마포지점"
+            android:textSize="22dp"
+            android:layout_weight="1"
+            android:padding="16dp"
             android:id="@+id/StoreName"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_marginRight="16dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:text=" Operating"
-            android:layout_gravity="center_vertical"
+            android:textSize="16dp"
+            android:text="운영중"
+            android:textColor="@android:color/holo_green_dark"
+            android:gravity="right"
+            android:layout_gravity="bottom"
+            android:paddingBottom="12dp"
             android:id="@+id/Operating"/>
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:padding="10dp"
-        android:text="OperatingTime"
-        android:id="@+id/OperatingTime"/>
+        android:paddingLeft="16dp">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:padding="10dp"
-        android:text="Address"
-        android:id="@+id/Address"/>
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_access_time_black_48dp"/>
 
-    <TextView
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:padding="16dp"
+            android:text="월~금 00:00~24:00 / 주말 9:00~18:00"
+            android:id="@+id/OperatingTime"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18dp"
-        android:padding="10dp"
-        android:text="Telephone"
-        android:id="@+id/Telephone"/>
+        android:paddingLeft="16dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:padding="12dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_home_black_48dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:padding="16dp"
+            android:text="서울시 신촌 201-521"
+            android:id="@+id/Address"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp">
+
+        <ImageView
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:padding="12dp"
+            android:src="@drawable/ic_phone_black_48dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"
+            android:padding="16dp"
+            android:text="02-701-4246"
+            android:id="@+id/Telephone"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>
