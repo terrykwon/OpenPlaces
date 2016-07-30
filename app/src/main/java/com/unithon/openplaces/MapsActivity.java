@@ -1,5 +1,14 @@
 package com.unithon.openplaces;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -26,6 +35,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,19 +45,31 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.collect.Lists;
 import com.naver.speech.clientapi.SpeechConfig;
+import com.unithon.openplaces.network.Constant;
+import com.unithon.openplaces.network.HttpFactory;
 import com.unithon.openplaces.network.response.DummyDatabase;
 import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
 import com.unithon.openplaces.speech.SampleSpeechActivity;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback {
+        OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private FloatingActionButton mFab;
@@ -60,6 +82,13 @@ public class MapsActivity extends FragmentActivity implements
     private static final int STATE_VIEWING_MAP = 1;
 
     private static int STATE = STATE_VIEWING_MAP;
+
+    // TextViews in BottomSheet
+    private TextView PlaceNameTextView;
+    private TextView PlaceOpenTextView;
+    private TextView PlacePhoneNumTextView;
+    private TextView PlaceAddressTextView;
+    private TextView PlaceHoursTextView;
 
     private AutoCompleteTextView searchText;
 
@@ -97,7 +126,7 @@ public class MapsActivity extends FragmentActivity implements
         });
 
         //toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -130,22 +159,41 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
         String[] countries = getResources().getStringArray(R.array.category);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         searchText.setAdapter(adapter);
         searchText.setThreshold(1);
 
-        // enter
+        // TODO enter
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.d("test : ", "testtest");
-                    Toast.makeText(MapsActivity.this, "testtest", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
+                                                 @Override
+                                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                                         String title = searchText.getText().toString();
+                                                         String region = "상암동";
+                                                         Location location = mMap.getMyLocation();
+                                                         Call<List<SearchResponse>> call = HttpFactory.search().search(title, location.getLatitude(), location.getLongitude(), region);
+
+                                                         call.enqueue(new Callback<List<SearchResponse>>() {
+                                                             @Override
+                                                             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
+                                                                 if (response.isSuccessful()) {
+                                                                     List<SearchResponse> responses = response.body();
+                                                                     Log.d("testtest", responses.toString());
+                                                                     renderMarkers(responses);
+                                                                 }
+                                                             }
+
+                                                             @Override
+                                                             public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
+                                                                 Log.d("search error:", " search error");
+                                                             }
+                                                         });
+                                                         return true;
+                                                     }
+                                                     return false;
+                                                 }
+                                             }
+        );
 
         // set custom animation
         getWindow().setExitTransition(null);
@@ -187,8 +235,49 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    private void darkenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+            tabColorFade = ObjectAnimator.ofObject(
+                    layout, "backgroundColor",
+                    new ArgbEvaluator(),
+                    ContextCompat.getColor(this, R.color.white),
+                    ContextCompat.getColor(this, R.color.colorPrimary));
+
+        tabColorFade.setDuration(1000);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+    }
+
+    private void lightenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+        tabColorFade = ObjectAnimator.ofObject(
+                layout, "backgroundColor",
+                new ArgbEvaluator(),
+                ContextCompat.getColor(this, R.color.colorPrimary),
+                ContextCompat.getColor(this, R.color.white));
+
+        tabColorFade.setDuration(500);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.black));
+    }
+
     private void initializeBottomSheet() {
         View bottomSheet = findViewById(R.id.layout_panel);
+
+        PlaceNameTextView = (TextView) findViewById(R.id.StoreName);
+        PlaceOpenTextView = (TextView) findViewById(R.id.Operating);
+        PlacePhoneNumTextView = (TextView) findViewById(R.id.Telephone);
+        PlaceAddressTextView = (TextView) findViewById(R.id.Address);
+        PlaceHoursTextView = (TextView) findViewById(R.id.OperatingTime);
 
         // Set up animations
         final Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
@@ -204,6 +293,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_DRAGGING:
                         if (fabShown) {
                             mFab.startAnimation(shrinkAnimation);
+                            darkenToolbarColor();
                         } else {
                             mFab.startAnimation(growAnimation);
                         }
@@ -211,6 +301,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         mFab.setVisibility(View.VISIBLE);
                         fabShown = true;
+                        lightenToolbarColor();
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         mFab.setVisibility(View.INVISIBLE);
@@ -234,15 +325,60 @@ public class MapsActivity extends FragmentActivity implements
         return responses;
     }
 
-    private void renderMarkers(ArrayList<SearchResponse> responses) {
+    private String millisToTime(long openAt, long closeAt) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(openAt);
+        String open = String.format("%02d",calendar.get(Calendar.HOUR));
+        String openMin = String.format("%02d",calendar.get(Calendar.MINUTE));
+        String openAm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
+
+        calendar.setTimeInMillis(closeAt);
+        String close = String.format("%02d",calendar.get(Calendar.HOUR));
+        String closeMin = String.format("%02d",calendar.get(Calendar.MINUTE));
+        String closeAm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
+
+        return open + ":" + openMin + openAm + " ~ " + close + ":" + closeMin + closeAm;
+    }
+
+    private void renderMarkers(List<SearchResponse> responses) {
         for (SearchResponse r : responses) {
             LatLng latLng = new LatLng(r.getLat(), r.getLng());
-            mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(r.getTitle())
-                    .snippet("Population: 4,627,300")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                    .infoWindowAnchor(0.5f, 0.5f));
+            String status = r.getStatus();
+            Long timeMillis = r.getCloseAt();
+
+
+            if (status != null) {
+                if (status.equals("OPEN")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                } else if (status.equals("BEFORE_ONE_HOUR")){
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                } else if (status.equals("CLOSE")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                }
+            } else {
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(r.getTitle())
+                        .snippet("정보없음")
+                        .infoWindowAnchor(0.5f, 0.5f));
+            }
+
+
         }
     }
 
@@ -276,14 +412,14 @@ public class MapsActivity extends FragmentActivity implements
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.setOnMarkerClickListener(new CustomMarkerClickListener(mBottomSheetBehavior));
+        mMap.setOnMarkerClickListener(this);
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
 
         //debug
-        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
-        renderMarkers(responses);
+//        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
+//        renderMarkers(responses);
 
 
     }
@@ -296,12 +432,11 @@ public class MapsActivity extends FragmentActivity implements
                 location.getLongitude());
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
-                6));
+                12));
     }
 
 
-
-    // 현재위치 버튼 enable.
+    // 현재위치 enable.
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -316,7 +451,39 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
+    //debug
 
+    private ArrayList<SearchResponse> generateSampleMarkers() {
+        ArrayList<SearchResponse> responses = new ArrayList<>();
+
+        SearchResponse s1 = new SearchResponse();
+        s1.lat = 37.5;
+        s1.lng = 126.8;
+        s1.title = "킨코스코리아 마포지점";
+
+        responses.add(s1);
+
+        SearchResponse s2 = new SearchResponse();
+        s2.lat = 37.521;
+        s2.lng = 126.81;
+        s2.title = "s2";
+
+        responses.add(s2);
+
+        SearchResponse s3 = new SearchResponse();
+        s3.lat = 37.552;
+        s3.lng = 126.81;
+        s3.title = "s3";
+
+        responses.add(s3);
+
+        SearchResponse s4 = new SearchResponse();
+        s4.lat = 37.553;
+        s4.lng = 126.81;
+        s4.title = "s4";
+        responses.add(s4);
+        return responses;
+    }
 
     //phone call
     private void call(String phoneNumber) {
@@ -328,8 +495,6 @@ public class MapsActivity extends FragmentActivity implements
             Toast.makeText(this,"통화가 안돠용",Toast.LENGTH_LONG).show();
         }
     }
-
-
 //=====================ookoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 
@@ -420,6 +585,12 @@ public class MapsActivity extends FragmentActivity implements
         naverRecognizer.getSpeechRecognizer().stopImmediately();
         naverRecognizer.getSpeechRecognizer().release();
         isRunning = false;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        return false;
     }
 
     // Declare handler for handling SpeechRecognizer thread's Messages.
