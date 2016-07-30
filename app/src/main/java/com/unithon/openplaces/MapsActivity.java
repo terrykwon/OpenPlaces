@@ -3,6 +3,7 @@ package com.unithon.openplaces;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -74,9 +75,11 @@ public class MapsActivity extends FragmentActivity implements
 //                overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
 
 //                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
-                Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
+//                Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
 //                startActivity(intent, options.toBundle());
-                startActivity(intent);
+//                startActivity(intent);
+
+                zoomToMyLocation();
             }
         });
 
@@ -229,10 +232,22 @@ public class MapsActivity extends FragmentActivity implements
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setOnMarkerClickListener(new CustomMarkerClickListener(mBottomSheetBehavior));
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
+    }
+
+    private void zoomToMyLocation() {
+        Location location = mMap.getMyLocation();
+        LatLng latLng;
+
+        latLng = new LatLng(location.getLatitude(),
+                location.getLongitude());
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                6));
     }
 
 
