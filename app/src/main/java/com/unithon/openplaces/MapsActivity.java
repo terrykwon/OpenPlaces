@@ -18,6 +18,8 @@ import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -37,6 +39,7 @@ public class MapsActivity extends FragmentActivity implements
     private Toolbar mToolbar;
     private BottomSheetBehavior mBottomSheetBehavior;
 
+    private boolean fabShown = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,11 @@ public class MapsActivity extends FragmentActivity implements
 
     private void initializeBottomSheet() {
         View bottomSheet = findViewById(R.id.layout_panel);
+
+        // Set up animations
+        final Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
+        final Animation shrinkAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_shrink);
+
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         mBottomSheetBehavior.setHideable(true);
 //        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -111,12 +119,20 @@ public class MapsActivity extends FragmentActivity implements
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 switch (newState) {
-                    case (BottomSheetBehavior.STATE_COLLAPSED):
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        if (fabShown) {
+                            mFab.startAnimation(shrinkAnimation);
+                        } else {
+                            mFab.startAnimation(growAnimation);
+                        }
                         break;
-
-                    case (BottomSheetBehavior.STATE_HIDDEN):
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        mFab.setVisibility(View.VISIBLE);
+                        fabShown = true;
                         break;
-                    default:
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        mFab.setVisibility(View.INVISIBLE);
+                        fabShown = false;
                         break;
                 }
             }
