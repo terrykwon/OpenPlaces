@@ -31,7 +31,7 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.8'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-    compile 'com.google.android.gms:play-services:9.2.1'
+    compile 'com.google.android.gms:play-services-map:9.2.1'
     compile files('libs/Naverspeech-1.0.4.jar')
 
     //multidex
