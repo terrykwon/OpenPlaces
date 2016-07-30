@@ -15,8 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback,
-        GoogleMap.OnMyLocationButtonClickListener {
+        OnMapReadyCallback {
 
     private GoogleMap mMap;
 
@@ -52,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.setOnMarkerClickListener(new CustomMarkerClickListener());
+        mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
     }
 
@@ -69,10 +69,5 @@ public class MapsActivity extends FragmentActivity implements
                 mMap.setMyLocationEnabled(true);
             }
         }
-    }
-
-    @Override
-    public boolean onMyLocationButtonClick() {
-        return false;
     }
 }
