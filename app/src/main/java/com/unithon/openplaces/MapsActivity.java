@@ -96,6 +96,7 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
+
     // 현재위치 버튼 enable.
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
