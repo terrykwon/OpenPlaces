@@ -27,4 +27,6 @@
         app:pressedTranslationZ="12dp"
         app:rippleColor="@android:color/white" />
 
+    <include layout="@layout/toolbar" />
+
 </android.support.design.widget.CoordinatorLayout>

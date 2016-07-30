@@ -8,10 +8,12 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,6 +28,7 @@ public class MapsActivity extends FragmentActivity implements
 
     private GoogleMap mMap;
     private FloatingActionButton mFab;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,16 @@ public class MapsActivity extends FragmentActivity implements
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
                 Intent intent = new Intent(MapsActivity.this, SampleSearchActivity.class);
                 startActivity(intent, options.toBundle());
+            }
+        });
+
+        // editText
+        AutoCompleteTextView searchText = (AutoCompleteTextView) findViewById(R.id.toolbar_search);
+        searchText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
+                startActivity(intent);
             }
         });
 
