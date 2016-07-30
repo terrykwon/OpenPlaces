@@ -8,6 +8,11 @@
     app:behavior_peekHeight="68dp"
     android:background="@android:color/white">
 
+    <ImageView
+        android:id="@+id/bottomsheet_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/bottomsheet_heading"
         android:layout_width="match_parent"
