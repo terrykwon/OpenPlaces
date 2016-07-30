@@ -45,6 +45,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.collect.Lists;
 import com.naver.speech.clientapi.SpeechConfig;
@@ -59,6 +60,7 @@ import com.unithon.openplaces.speech.SampleSpeechActivity;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -67,7 +69,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MapsActivity extends FragmentActivity implements
-        OnMapReadyCallback {
+        OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private FloatingActionButton mFab;
@@ -323,15 +325,60 @@ public class MapsActivity extends FragmentActivity implements
         return responses;
     }
 
+    private String millisToTime(long openAt, long closeAt) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(openAt);
+        String open = String.format("%02d",calendar.get(Calendar.HOUR));
+        String openMin = String.format("%02d",calendar.get(Calendar.MINUTE));
+        String openAm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
+
+        calendar.setTimeInMillis(closeAt);
+        String close = String.format("%02d",calendar.get(Calendar.HOUR));
+        String closeMin = String.format("%02d",calendar.get(Calendar.MINUTE));
+        String closeAm = (calendar.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM";
+
+        return open + ":" + openMin + openAm + " ~ " + close + ":" + closeMin + closeAm;
+    }
+
     private void renderMarkers(List<SearchResponse> responses) {
         for (SearchResponse r : responses) {
             LatLng latLng = new LatLng(r.getLat(), r.getLng());
-            mMap.addMarker(new MarkerOptions()
-                    .position(latLng)
-                    .title(r.getTitle())
-                    .snippet("Population: 4,627,300")
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                    .infoWindowAnchor(0.5f, 0.5f));
+            String status = r.getStatus();
+            Long timeMillis = r.getCloseAt();
+
+
+            if (status != null) {
+                if (status.equals("OPEN")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                } else if (status.equals("BEFORE_ONE_HOUR")){
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                } else if (status.equals("CLOSE")) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title(r.getTitle())
+                            .snippet(millisToTime(r.getOpenAt(), r.getCloseAt()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
+                            .infoWindowAnchor(0.5f, 0.5f));
+                }
+            } else {
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title(r.getTitle())
+                        .snippet("정보없음")
+                        .infoWindowAnchor(0.5f, 0.5f));
+            }
+
+
         }
     }
 
@@ -365,14 +412,14 @@ public class MapsActivity extends FragmentActivity implements
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
-        mMap.setOnMarkerClickListener(new CustomMarkerClickListener(mBottomSheetBehavior));
+        mMap.setOnMarkerClickListener(this);
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
 
         //debug
-        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
-        renderMarkers(responses);
+//        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
+//        renderMarkers(responses);
 
 
     }
@@ -538,6 +585,12 @@ public class MapsActivity extends FragmentActivity implements
         naverRecognizer.getSpeechRecognizer().stopImmediately();
         naverRecognizer.getSpeechRecognizer().release();
         isRunning = false;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        return false;
     }
 
     // Declare handler for handling SpeechRecognizer thread's Messages.
