@@ -1,6 +1,5 @@
 package com.unithon.openplaces;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -25,7 +24,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +36,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.naver.speech.clientapi.SpeechConfig;
+import com.unithon.openplaces.network.response.DummyDatabase;
 import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
@@ -268,8 +267,6 @@ public class MapsActivity extends FragmentActivity implements
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        // sample markers
-        generateSampleMarkers();
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -280,7 +277,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
 
         //debug
-        ArrayList<SearchResponse> responses = generateSampleMarkers();
+        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
         renderMarkers(responses);
 
 
@@ -314,48 +311,7 @@ public class MapsActivity extends FragmentActivity implements
         }
     }
 
-    //debug
-    private ArrayList<SearchResponse> generateSampleMarkers() {
-        ArrayList<SearchResponse> responses = new ArrayList<>();
 
-        SearchResponse s1 = new SearchResponse();
-        s1.lat = 37.5;
-        s1.lng = 126.8;
-        s1.title = "s1";
-
-        responses.add(s1);
-
-        SearchResponse s2 = new SearchResponse();
-        s2.lat = 37.521;
-        s2.lng = 126.81;
-        s2.title = "s2";
-
-        responses.add(s2);
-
-
-        SearchResponse s3 = new SearchResponse();
-        s3.lat = 37.552;
-        s3.lng = 126.81;
-        s3.title = "s3";
-
-        responses.add(s3);
-
-        SearchResponse s4 = new SearchResponse();
-        s4.lat = 37.553;
-        s4.lng = 126.81;
-        s4.title = "s4";
-
-        responses.add(s4);
-
-        SearchResponse s5 = new SearchResponse();
-        s5.lat = 37.557;
-        s5.lng = 126.81;
-        s5.title = "s5";
-
-        responses.add(s5);
-
-        return responses;
-    }
 
     //phone call
     private void call(String phoneNumber) {
