@@ -15,8 +15,6 @@
         <item name="android:windowSharedElementEnterTransition">@transition/app_bar_transform</item>
         <item name="android:windowSharedElementExitTransition">@transition/app_bar_transform</item>
 
-        <!-- make status bar icons dark -->
-        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 </resources>

@@ -62,6 +62,13 @@ public class MapsActivity extends FragmentActivity implements
 
     private static int STATE = STATE_VIEWING_MAP;
 
+    // TextViews in BottomSheet
+    private TextView PlaceNameTextView;
+    private TextView PlaceOpenTextView;
+    private TextView PlacePhoneNumTextView;
+    private TextView PlaceAddressTextView;
+    private TextView PlaceHoursTextView;
+
     private AutoCompleteTextView searchText;
 
     // Result of query.
@@ -213,7 +220,7 @@ public class MapsActivity extends FragmentActivity implements
                 ContextCompat.getColor(this, R.color.colorPrimary),
                 ContextCompat.getColor(this, R.color.white));
 
-        tabColorFade.setDuration(1000);
+        tabColorFade.setDuration(500);
         tabColorFade.start();
 
         textView.setTextColor(ContextCompat.getColor(this, R.color.black));
@@ -221,6 +228,12 @@ public class MapsActivity extends FragmentActivity implements
 
     private void initializeBottomSheet() {
         View bottomSheet = findViewById(R.id.layout_panel);
+
+        PlaceNameTextView = (TextView) findViewById(R.id.StoreName);
+        PlaceOpenTextView = (TextView) findViewById(R.id.Operating);
+        PlacePhoneNumTextView = (TextView) findViewById(R.id.Telephone);
+        PlaceAddressTextView = (TextView) findViewById(R.id.Address);
+        PlaceHoursTextView = (TextView) findViewById(R.id.OperatingTime);
 
         // Set up animations
         final Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
@@ -332,7 +345,7 @@ public class MapsActivity extends FragmentActivity implements
                 location.getLongitude());
 
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
-                6));
+                12));
     }
 
 
@@ -359,7 +372,7 @@ public class MapsActivity extends FragmentActivity implements
         SearchResponse s1 = new SearchResponse();
         s1.lat = 37.5;
         s1.lng = 126.8;
-        s1.title = "s1";
+        s1.title = "킨코스코리아 마포지점";
 
         responses.add(s1);
 
