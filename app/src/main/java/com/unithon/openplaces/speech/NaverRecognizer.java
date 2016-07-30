@@ -11,7 +11,7 @@ import com.naver.speech.clientapi.SpeechRecognitionListener;
 import com.naver.speech.clientapi.SpeechRecognizer;
 import com.unithon.openplaces.R;
 
-class NaverRecognizer implements SpeechRecognitionListener {
+public class NaverRecognizer implements SpeechRecognitionListener {
 
 	private final static String TAG = NaverRecognizer.class.getSimpleName();
 

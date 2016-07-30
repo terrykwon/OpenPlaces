@@ -129,7 +129,6 @@ public class SampleSpeechActivity extends Activity{
 
     @Override
     protected void onResume() {
-        Log.v(LOG_TAG, "OnResume()asgasdgsadgasldgasgdasdgasdgsadgasdgsadgsadg");
         super.onResume();
         // initialize() must be called on resume time.
         naverRecognizer.getSpeechRecognizer().initialize();
