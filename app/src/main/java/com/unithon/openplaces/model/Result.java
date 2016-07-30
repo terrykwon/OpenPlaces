@@ -1,16 +1,10 @@
 package com.unithon.openplaces.model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * Created by choi on 2016-07-30.
+ * Created by choi on 2016-07-31.
  */
-public class LocalResponse {
-    /*
-    {
-   "html_attributions" : [],
-   "results" : [
+public class Result {
+    /*"results" : [
       {
          "geometry" : {
             "location" : {
@@ -31,9 +25,15 @@ public class LocalResponse {
          "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/generic_business-71.png",
          "id" : "ce4ffe228ab7ad49bb050defe68b3d28cc879c4a",
          "name" : "Sydney Showboats",
-     */
-    private List<Result> results = new ArrayList<>();
-    public List<Result> getResults() {
-        return results;
+         */
+    private Locations geometry;
+    private String name;
+
+    public Locations getLocations() {
+        return geometry;
+    }
+
+    public String getName() {
+        return name;
     }
 }

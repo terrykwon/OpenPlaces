@@ -14,8 +14,6 @@ import com.unithon.openplaces.model.LocalResponse;
 import com.unithon.openplaces.model.SearchResponse;
 import com.unithon.openplaces.network.AppController;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -92,17 +90,20 @@ public class NaverMapActivity extends AppCompatActivity {
         html_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Call<List<LocalResponse>> localResponseCall = AppController.getSearch().localSearch(Constant.GOOGLE_API_KEY, "-33.8669710, 151.1958750", 5000);
-                localResponseCall.enqueue(new Callback<List<LocalResponse>>() {
+                Call<LocalResponse> localResponseCall = AppController.getSearch().localSearch("-33.8670522,151.1957362", 500, Constant.GOOGLE_API_KEY);
+                localResponseCall.enqueue(new Callback<LocalResponse>() {
                     @Override
-                    public void onResponse(Call<List<LocalResponse>> call, Response<List<LocalResponse>> response) {
+                    public void onResponse(Call<LocalResponse> call, Response<LocalResponse> response) {
                         if(response.isSuccessful()) {
-                            locationSearch.setText(String.valueOf(localResponseCall));
+                            LocalResponse localResponse = response.body();
+                            Log.e("getResults()", String.valueOf(localResponse.getResults().get(0).getName()));
+                            Log.e("get(0)", String.valueOf(localResponse.getResults().get(0).getLocations()));
+//                            locationSearch.setText((int) localResponse.getResults().get(0).getLocations()());
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<List<LocalResponse>> call, Throwable t) {
+                    public void onFailure(Call<LocalResponse> call, Throwable t) {
                         Log.e("connection status", "fail2");
                         Toast.makeText(NaverMapActivity.this, "네트워크 연결 실패", Toast.LENGTH_SHORT).show();
                     }

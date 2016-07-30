@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.unithon.openplaces.model.LocalResponse;
 import com.unithon.openplaces.model.SearchResponse;
 
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -33,5 +31,5 @@ public interface HttpService {
      * @return
      */
     @GET("json")
-    Call<List<LocalResponse>> localSearch(@Query("key") String key, @Query("location") String location, @Query("radius") long radius);
+    Call<LocalResponse> localSearch(@Query("location") String location, @Query("radius") long radius, @Query("key") String key);
 }
