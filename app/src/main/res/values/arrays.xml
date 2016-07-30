@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>식당</item>
+        <item>약국</item>
+        <item>세탁소</item>
+        <item>치킨집</item>
+        <item>네일아트</item>
+        <item>미용실</item>
+        <item>이발소</item>
+    </string-array>
+</resources>
