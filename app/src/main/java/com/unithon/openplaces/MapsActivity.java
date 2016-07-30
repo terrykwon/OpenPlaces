@@ -13,6 +13,7 @@ import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
@@ -53,16 +54,25 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
 
+        //toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+
         // editText
         AutoCompleteTextView searchText = (AutoCompleteTextView) findViewById(R.id.toolbar_search);
         searchText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
+                /*ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
                 Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
-                startActivity(intent, options.toBundle());
+                startActivity(intent, options.toBundle());*/
             }
         });
+        String[] countries = getResources().getStringArray(R.array.category);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
+        searchText.setAdapter(adapter);
+        searchText.setThreshold(1);
 
         // set custom animation
         getWindow().setExitTransition(null);

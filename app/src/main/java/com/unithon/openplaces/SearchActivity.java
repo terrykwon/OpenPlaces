@@ -2,39 +2,26 @@ package com.unithon.openplaces;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.transition.Slide;
 import android.transition.Transition;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 
 /**
  * Created by Noverish on 2016-07-30.
  */
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends Fragment {
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        AutoCompleteTextView searchText = (AutoCompleteTextView) findViewById(R.id.toolbar_search);
-        String[] countries = getResources().getStringArray(R.array.category);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
-        searchText.setAdapter(adapter);
-        searchText.setThreshold(1);
-
-        // Set up transitions
-        // Set up custom transitions
-        Transition enterTrans = new Explode();
-        getWindow().setEnterTransition(enterTrans);
-
-        Transition returnTrans = new Explode();
-        getWindow().setReturnTransition(returnTrans);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_search, null);
     }
 }
