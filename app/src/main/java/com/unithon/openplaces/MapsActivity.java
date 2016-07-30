@@ -169,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements
                                                          String title = searchText.getText().toString();
                                                          String region = "상암동";
                                                          Location location = mMap.getMyLocation();
-                                                         Call<List<SearchResponse>> call = HttpFactory.search().search(title, "" + location.getLatitude() + "," + location.getLongitude(), region);
+                                                         Call<List<SearchResponse>> call = HttpFactory.search().search(title, location.getLatitude(), location.getLongitude(), region);
 
                                                          call.enqueue(new Callback<List<SearchResponse>>() {
                                                              @Override
