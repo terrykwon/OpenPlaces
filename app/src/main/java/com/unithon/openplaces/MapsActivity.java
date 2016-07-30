@@ -41,6 +41,11 @@ public class MapsActivity extends FragmentActivity implements
 
     private boolean fabShown = true;
 
+    private static final int STATE_SEARCHING = 0;
+    private static final int STATE_VIEWING_MAP = 1;
+
+    private static int STATE = STATE_VIEWING_MAP;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,19 +83,23 @@ public class MapsActivity extends FragmentActivity implements
                 Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
                 startActivity(intent, options.toBundle());*/
 
-                // Create new fragment and transaction
-                Fragment newFragment = SearchFragment.newInstance();
-                FragmentTransaction transaction = getSupportFragmentManager()
-                        .beginTransaction();
+                if (STATE == STATE_VIEWING_MAP) {
+                    // Create new fragment and transaction
+                    Fragment newFragment = SearchFragment.newInstance();
+                    FragmentTransaction transaction = getSupportFragmentManager()
+                            .beginTransaction();
 
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack
-                transaction.add(R.id.map, newFragment);
-                transaction.addToBackStack(null);
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                    // Replace whatever is in the fragment_container view with this fragment,
+                    // and add the transaction to the back stack
+                    transaction.add(R.id.map, newFragment);
+                    transaction.addToBackStack(null);
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
-                // Commit the transaction
-                transaction.commit();
+                    // Commit the transaction
+                    transaction.commit();
+
+                    STATE = STATE_SEARCHING;
+                }
             }
         });
         String[] countries = getResources().getStringArray(R.array.category);
@@ -144,6 +153,13 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        if (STATE == STATE_SEARCHING) {
+            STATE = STATE_VIEWING_MAP;
+        }
+        super.onBackPressed();
+    }
 
     /**
      * Manipulates the map once available.
