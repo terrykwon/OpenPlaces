@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
+import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -49,6 +50,7 @@ import com.google.common.collect.Lists;
 import com.naver.speech.clientapi.SpeechConfig;
 import com.unithon.openplaces.network.Constant;
 import com.unithon.openplaces.network.HttpFactory;
+import com.unithon.openplaces.network.response.DummyDatabase;
 import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
@@ -95,6 +97,10 @@ public class MapsActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        //check Manifest uses-permissions is on
+        checkPermissions();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -354,8 +360,6 @@ public class MapsActivity extends FragmentActivity implements
 //        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
 
-        // sample markers
-        generateSampleMarkers();
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
@@ -366,7 +370,7 @@ public class MapsActivity extends FragmentActivity implements
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
 
         //debug
-        ArrayList<SearchResponse> responses = generateSampleMarkers();
+        ArrayList<SearchResponse> responses = DummyDatabase.getInstance().getResponses();
         renderMarkers(responses);
 
 
@@ -429,21 +433,13 @@ public class MapsActivity extends FragmentActivity implements
         s4.lat = 37.553;
         s4.lng = 126.81;
         s4.title = "s4";
-
         responses.add(s4);
-
-        SearchResponse s5 = new SearchResponse();
-        s5.lat = 37.557;
-        s5.lng = 126.81;
-        s5.title = "s5";
-
-        responses.add(s5);
-
         return responses;
     }
 
     //phone call
     private void call(String phoneNumber) {
+        phoneNumber = phoneNumber.replaceAll("-","");
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
         try {
             startActivity(intent);
@@ -558,5 +554,56 @@ public class MapsActivity extends FragmentActivity implements
                 activity.handleMessage(msg);
             }
         }
+    }
+
+    private boolean checkPermissions() {
+        int res = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("RECORD_AUDIO","ok");
+        } else {
+            Log.e("RECORD_AUDIO","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("CALL_PHONE","ok");
+        } else {
+            Log.e("CALL_PHONE","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("WRITE_EXTERNAL_STORAGE","ok");
+        } else {
+            Log.e("WRITE_EXTERNAL_STORAGE","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("ACCESS_COARSE_LOCATION","ok");
+        } else {
+            Log.e("ACCESS_COARSE_LOCATION","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("ACCESS_FINE_LOCATION","ok");
+        } else {
+            Log.e("ACCESS_FINE_LOCATION","NOT OK");
+
+        }
+
+        res = ContextCompat.checkSelfPermission(this, Manifest.permission.INTERNET);
+        if(res == PackageManager.PERMISSION_GRANTED) {
+            Log.e("INTERNET","ok");
+        } else {
+            Log.e("INTERNET","NOT OK");
+        }
+
+        return true;
     }
 }
