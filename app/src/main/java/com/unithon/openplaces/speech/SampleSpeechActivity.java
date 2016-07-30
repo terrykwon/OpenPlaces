@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -19,6 +20,8 @@ import java.lang.ref.WeakReference;
  * Created by Noverish on 2016-07-31.
  */
 public class SampleSpeechActivity extends Activity{
+
+    public static final String LOG_TAG = SampleSpeechActivity.class.getSimpleName();
 
     private static final String CLIENT_ID = Authentication.CLIENT_ID; // "내 애플리케이션"에서 Client ID를 확인해서 이곳에 적어주세요.
     private static final SpeechConfig SPEECH_CONFIG = SpeechConfig.OPENAPI_KR; // or SpeechConfig.OPENAPI_EN
@@ -126,6 +129,7 @@ public class SampleSpeechActivity extends Activity{
 
     @Override
     protected void onResume() {
+        Log.v(LOG_TAG, "OnResume()asgasdgsadgasldgasgdasdgasdgsadgasdgsadgsadg");
         super.onResume();
         // initialize() must be called on resume time.
         naverRecognizer.getSpeechRecognizer().initialize();

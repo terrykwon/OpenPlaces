@@ -59,9 +59,10 @@ public class MapsActivity extends FragmentActivity implements
 //                startActivity(intent);
 //                overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
 
-                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
+//                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
                 Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
-                startActivity(intent, options.toBundle());
+//                startActivity(intent, options.toBundle());
+                startActivity(intent);
             }
         });
 
