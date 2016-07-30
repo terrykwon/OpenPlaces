@@ -179,6 +179,8 @@ public class MapsActivity extends FragmentActivity implements
 //                                                                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
 //                                                         );
                                                          hideKeyboard(MapsActivity.this);
+                                                         mMap.clear();
+                                                         placeInfoMap.clear();
 
                                                          String title = searchText.getText().toString();
                                                          String region = "상암동";
@@ -401,6 +403,7 @@ public class MapsActivity extends FragmentActivity implements
                 marker =  mMap.addMarker(new MarkerOptions()
                         .position(latLng)
                         .title(r.getTitle())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_grey))
                         .snippet("정보없음")
                         .infoWindowAnchor(0.5f, 0.5f));
             }
@@ -627,7 +630,19 @@ public class MapsActivity extends FragmentActivity implements
         PlaceNameTextView.setText(response.getTitle());
         PlacePhoneNumTextView.setText(response.getTel());
         PlaceAddressTextView.setText(response.getAddress());
-        PlaceOpenTextView.setText(response.getStatus());
+        String status = response.getStatus();
+        PlaceOpenTextView.setText(status);
+        if (status.equals("OPEN")) {
+            PlaceOpenTextView.setTextColor(getResources().getColor(R.color.green));
+        } else if (status.equals("CLOSE")) {
+            PlaceOpenTextView.setTextColor(getResources().getColor(R.color.red));
+        } else if (status.equals("BEFORE_ONE_HOUR")) {
+            PlaceOpenTextView.setTextColor(getResources().getColor(R.color.yellow));
+        } else {
+            PlaceOpenTextView.setTextColor(getResources().getColor(R.color.grey));
+        }
+
+        PlaceHoursTextView.setText(millisToTime(response.getOpenAt(), response.getCloseAt()));
         return false;
     }
 
