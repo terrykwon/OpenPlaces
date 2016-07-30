@@ -35,7 +35,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".SampleSearchActivity"></activity>
-        <activity android:name=".SearchActivity" />
+
+        <activity android:name=".SearchActivity"
+            android:windowSoftInputMode="stateAlwaysVisible" >
+        </activity>
     </application>
 
 </manifest>
