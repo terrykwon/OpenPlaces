@@ -37,6 +37,7 @@ public class MapsActivity extends FragmentActivity implements
     private Toolbar mToolbar;
     private BottomSheetBehavior mBottomSheetBehavior;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
