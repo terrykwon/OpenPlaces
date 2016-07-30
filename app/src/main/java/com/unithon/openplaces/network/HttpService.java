@@ -18,5 +18,5 @@ public interface HttpService {
      * 실시간 주변 지역 상권 정보 요청
      */
     @GET("/find/open-place")
-    Call<List<SearchResponse>> search(@Query("keyword") String keyword, @Query("lat") double lat, @Query("lng") double lng, @Query("region") String region);
+    Call<List<SearchResponse>> search(@Query("title") String title, @Query("lat") double lat, @Query("lng") double lng, @Query("region") String region);
 }
