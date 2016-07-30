@@ -7,6 +7,12 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -28,6 +34,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +79,17 @@ public class MapsActivity extends FragmentActivity implements
 
     private static int STATE = STATE_VIEWING_MAP;
 
+    // TextViews in BottomSheet
+    private TextView PlaceNameTextView;
+    private TextView PlaceOpenTextView;
+    private TextView PlacePhoneNumTextView;
+    private TextView PlaceAddressTextView;
+    private TextView PlaceHoursTextView;
+
     private AutoCompleteTextView searchText;
+
+    // Result of query.
+    public ArrayList<SearchResponse> responses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,14 +109,16 @@ public class MapsActivity extends FragmentActivity implements
 //                overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
 
 //                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
-                Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
+//                Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
 //                startActivity(intent, options.toBundle());
-                startActivity(intent);
+//                startActivity(intent);
+
+                zoomToMyLocation();
             }
         });
 
         //toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -205,11 +224,51 @@ public class MapsActivity extends FragmentActivity implements
                 }
             }
         });
+    }
 
+    private void darkenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+            tabColorFade = ObjectAnimator.ofObject(
+                    layout, "backgroundColor",
+                    new ArgbEvaluator(),
+                    ContextCompat.getColor(this, R.color.white),
+                    ContextCompat.getColor(this, R.color.colorPrimary));
+
+        tabColorFade.setDuration(1000);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+    }
+
+    private void lightenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+        tabColorFade = ObjectAnimator.ofObject(
+                layout, "backgroundColor",
+                new ArgbEvaluator(),
+                ContextCompat.getColor(this, R.color.colorPrimary),
+                ContextCompat.getColor(this, R.color.white));
+
+        tabColorFade.setDuration(500);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.black));
     }
 
     private void initializeBottomSheet() {
         View bottomSheet = findViewById(R.id.layout_panel);
+
+        PlaceNameTextView = (TextView) findViewById(R.id.StoreName);
+        PlaceOpenTextView = (TextView) findViewById(R.id.Operating);
+        PlacePhoneNumTextView = (TextView) findViewById(R.id.Telephone);
+        PlaceAddressTextView = (TextView) findViewById(R.id.Address);
+        PlaceHoursTextView = (TextView) findViewById(R.id.OperatingTime);
 
         // Set up animations
         final Animation growAnimation = AnimationUtils.loadAnimation(this, R.anim.simple_grow);
@@ -225,6 +284,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_DRAGGING:
                         if (fabShown) {
                             mFab.startAnimation(shrinkAnimation);
+                            darkenToolbarColor();
                         } else {
                             mFab.startAnimation(growAnimation);
                         }
@@ -232,6 +292,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         mFab.setVisibility(View.VISIBLE);
                         fabShown = true;
+                        lightenToolbarColor();
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         mFab.setVisibility(View.INVISIBLE);
@@ -245,6 +306,26 @@ public class MapsActivity extends FragmentActivity implements
 
             }
         });
+    }
+
+    // To be called when search button is pressed. Returns an ArrayList of responses.
+    private ArrayList<SearchResponse> search() {
+        ArrayList<SearchResponse> responses = new ArrayList<>();
+        SearchResponse sr1 = new SearchResponse();
+
+        return responses;
+    }
+
+    private void renderMarkers(ArrayList<SearchResponse> responses) {
+        for (SearchResponse r : responses) {
+            LatLng latLng = new LatLng(r.getLat(), r.getLng());
+            mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title(r.getTitle())
+                    .snippet("Population: 4,627,300")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
+                    .infoWindowAnchor(0.5f, 0.5f));
+        }
     }
 
     @Override
@@ -278,14 +359,32 @@ public class MapsActivity extends FragmentActivity implements
 
         // Remove directions, show in map button at bottom.
         mMap.getUiSettings().setMapToolbarEnabled(false);
+        mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setOnMarkerClickListener(new CustomMarkerClickListener(mBottomSheetBehavior));
         mMap.setOnMyLocationButtonClickListener(new CustomMyLocationButtonClickListener());
         enableMyLocation();
         mMap.setOnMapClickListener(new CustomOnMapClickListener(mBottomSheetBehavior));
+
+        //debug
+        ArrayList<SearchResponse> responses = generateSampleMarkers();
+        renderMarkers(responses);
+
+
+    }
+
+    private void zoomToMyLocation() {
+        Location location = mMap.getMyLocation();
+        LatLng latLng;
+
+        latLng = new LatLng(location.getLatitude(),
+                location.getLongitude());
+
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,
+                12));
     }
 
 
-    // 현재위치 버튼 enable.
+    // 현재위치 enable.
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -301,54 +400,57 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     //debug
-    private void generateSampleMarkers() {
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.5, 126.9))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.51, 126.92))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.52, 126.91))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.15, 126.93))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.54, 126.93))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_yellow))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.56, 126.96))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));
-        mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(37.57, 126.92))
-                .title("Seoul")
-                .snippet("Population: 4,627,300")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_green))
-                .infoWindowAnchor(0.5f, 0.5f));
 
+    private ArrayList<SearchResponse> generateSampleMarkers() {
+        ArrayList<SearchResponse> responses = new ArrayList<>();
 
+        SearchResponse s1 = new SearchResponse();
+        s1.lat = 37.5;
+        s1.lng = 126.8;
+        s1.title = "킨코스코리아 마포지점";
+
+        responses.add(s1);
+
+        SearchResponse s2 = new SearchResponse();
+        s2.lat = 37.521;
+        s2.lng = 126.81;
+        s2.title = "s2";
+
+        responses.add(s2);
+
+        SearchResponse s3 = new SearchResponse();
+        s3.lat = 37.552;
+        s3.lng = 126.81;
+        s3.title = "s3";
+
+        responses.add(s3);
+
+        SearchResponse s4 = new SearchResponse();
+        s4.lat = 37.553;
+        s4.lng = 126.81;
+        s4.title = "s4";
+
+        responses.add(s4);
+
+        SearchResponse s5 = new SearchResponse();
+        s5.lat = 37.557;
+        s5.lng = 126.81;
+        s5.title = "s5";
+
+        responses.add(s5);
+
+        return responses;
     }
 
-
+    //phone call
+    private void call(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNumber));
+        try {
+            startActivity(intent);
+        } catch (Exception ex) {
+            Toast.makeText(this,"통화가 안돠용",Toast.LENGTH_LONG).show();
+        }
+    }
 //=====================ookoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
 
 

@@ -7,32 +7,27 @@ import java.util.List;
  * Created by choi on 2016-07-30.
  */
 public class SearchResponse {
-    private String title;
+    // titles
+    public String title;
     private String tel;
     private String address;
     private List<ImagesInfo> images = new ArrayList<>();
     private String status;
     private String link;
-    private Double lat;
-    private Double lng;
     private long mapX;
     private long mapY;
+    // map
+    public double lat;
+    public double lng;
+
     private String category;
     private long closeAt;
     private long openAt;
     private String description;
 
 
-    public double getLat() {
-        return lat;
-    }
-
     public void setLat(double lat) {
         this.lat = lat;
-    }
-
-    public double getLng() {
-        return lng;
     }
 
     public void setLng(double lng) {
@@ -110,6 +105,12 @@ public class SearchResponse {
     }
     public long getMapY() {
         return mapY;
+    }
+    public double getLat(){
+        return lat;
+    }
+    public double getLng() {
+        return lng;
     }
     public String getCategory() {
         return category;
