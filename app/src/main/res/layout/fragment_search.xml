@@ -5,9 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:activity=".SearchActivity">
-
-    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +32,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_food"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_food"/>
                 </RelativeLayout>
 
                 <TextView
@@ -60,7 +61,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_coffee"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_coffee"/>
                 </RelativeLayout>
 
                 <TextView
@@ -86,7 +89,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beauty"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_beauty"/>
                 </RelativeLayout>
 
                 <TextView
@@ -119,7 +124,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_laundry"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_laundry"/>
                 </RelativeLayout>
 
                 <TextView
@@ -147,7 +154,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_print"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_print"/>
                 </RelativeLayout>
 
                 <TextView
@@ -174,7 +183,9 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_etc"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:clickable="true"
+                        android:src="@drawable/icon_etc"/>
                 </RelativeLayout>
 
                 <TextView

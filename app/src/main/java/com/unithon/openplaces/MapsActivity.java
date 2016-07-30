@@ -5,8 +5,10 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -67,6 +69,20 @@ public class MapsActivity extends FragmentActivity implements
                 /*ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
                 Intent intent = new Intent(MapsActivity.this, SearchActivity.class);
                 startActivity(intent, options.toBundle());*/
+
+                // Create new fragment and transaction
+                Fragment newFragment = SearchFragment.newInstance();
+                FragmentTransaction transaction = getSupportFragmentManager()
+                        .beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack
+                transaction.add(R.id.map, newFragment);
+                transaction.addToBackStack(null);
+                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+                // Commit the transaction
+                transaction.commit();
             }
         });
         String[] countries = getResources().getStringArray(R.array.category);
