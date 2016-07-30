@@ -9,8 +9,83 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".NaverMapActivity">
 
-    <TextView
+    <EditText
+        android:id="@+id/input_region"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:hint="region"
+        android:textSize="15dp"/>
+
+    <EditText
+        android:id="@+id/input_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_region"
+        android:hint="title"
+        android:textSize="15dp"/>
+
+    <Button
+        android:id="@+id/search_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_title"
+        android:textSize="20dp"
+        android:text="search" />
+    <Button
+        android:id="@+id/html_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_title"
+        android:layout_toRightOf="@+id/search_btn"
+        android:textSize="20dp"
+        android:text="html code"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_btn"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/tel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tel"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/closeAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/address"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/openAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/closeAt"
+        android:textSize="15dp"/>
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/openAt"
+        android:textSize="15dp"/>
+
+    <TextView
+        android:id="@+id/search_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/status"/>
+
+    <TextView
+        android:id="@+id/location_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_code"/>
 </RelativeLayout>
