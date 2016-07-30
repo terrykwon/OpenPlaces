@@ -10,22 +10,22 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:background="#afafaf">
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="55sp"
-            app:contentInsetLeft="0dp"
-            app:contentInsetStart="0dp">
+            android:layout_height="wrap_content">
 
         </android.support.v7.widget.Toolbar>
 
-        <EditText
-            android:id="@+id/toolbar_title"
-            android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/toolbar_search"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:gravity="center"
+            android:gravity="left"
             android:hint="OpenPlaces 지도 검색"
             android:background="@android:color/transparent"
             android:textSize="22sp"/>
