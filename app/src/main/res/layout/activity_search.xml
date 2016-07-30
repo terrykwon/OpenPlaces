@@ -29,12 +29,11 @@
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
+                    android:padding="@dimen/activity_search_icon_padding">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
+                        android:background="@drawable/icon_food"/>
                 </RelativeLayout>
 
                 <TextView
@@ -42,7 +41,34 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="음식점"/>
+                    android:text="Food"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
+                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:gravity="center"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:layout_width="@dimen/activity_search_icon_size"
+                    android:layout_height="@dimen/activity_search_icon_size"
+                    android:padding="@dimen/activity_search_icon_padding">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/icon_coffee"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
+                    android:gravity="center"
+                    android:text="Cafe"/>
             </LinearLayout>
 
             <LinearLayout
@@ -56,12 +82,11 @@
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
+                    android:padding="@dimen/activity_search_icon_padding">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
+                        android:background="@drawable/icon_beauty"/>
                 </RelativeLayout>
 
                 <TextView
@@ -69,61 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
+                    android:text="Beauty"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -140,15 +111,15 @@
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
+                    android:padding="@dimen/activity_search_icon_padding">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
+                        android:background="@drawable/icon_laundry"/>
                 </RelativeLayout>
 
                 <TextView
@@ -156,7 +127,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="음식점"/>
+                    android:text="Laundry"/>
+
             </LinearLayout>
 
             <LinearLayout
@@ -167,15 +139,15 @@
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
+                    android:padding="@dimen/activity_search_icon_padding">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
+                        android:background="@drawable/icon_print"/>
                 </RelativeLayout>
 
                 <TextView
@@ -183,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="음식점"/>
+                    android:text="Print"/>
             </LinearLayout>
 
             <LinearLayout
@@ -194,15 +166,15 @@
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
+                    android:padding="@dimen/activity_search_icon_padding">
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
+                        android:background="@drawable/icon_etc"/>
                 </RelativeLayout>
 
                 <TextView
@@ -210,150 +182,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
+                    android:text="etc."/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_search_row_top_margin"
-            android:orientation="horizontal">
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
-                android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
-                android:gravity="center"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="@dimen/activity_search_icon_size"
-                    android:layout_height="@dimen/activity_search_icon_size"
-                    android:padding="@dimen/activity_search_icon_padding"
-                    android:background="@drawable/category">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/icon_beverage"/>
-                </RelativeLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_search_text_top_margin"
-                    android:gravity="center"
-                    android:text="음식점"/>
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
