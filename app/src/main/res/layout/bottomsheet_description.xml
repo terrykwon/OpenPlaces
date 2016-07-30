@@ -9,6 +9,7 @@
     android:background="@android:color/white">
 
     <LinearLayout
+        android:id="@+id/bottomsheet_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
@@ -37,6 +38,11 @@
             android:id="@+id/Operating"/>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,6 +1,7 @@
 package com.unithon.openplaces;
 
-import android.app.ActivityOptions;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -25,8 +26,8 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements
         });
 
         //toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
@@ -183,6 +184,41 @@ public class MapsActivity extends FragmentActivity implements
         });
     }
 
+    private void darkenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+            tabColorFade = ObjectAnimator.ofObject(
+                    layout, "backgroundColor",
+                    new ArgbEvaluator(),
+                    ContextCompat.getColor(this, R.color.white),
+                    ContextCompat.getColor(this, R.color.colorPrimary));
+
+        tabColorFade.setDuration(1000);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.white));
+
+    }
+
+    private void lightenToolbarColor() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.bottomsheet_heading);
+        TextView textView = (TextView) findViewById(R.id.StoreName);
+
+        ObjectAnimator tabColorFade;
+        tabColorFade = ObjectAnimator.ofObject(
+                layout, "backgroundColor",
+                new ArgbEvaluator(),
+                ContextCompat.getColor(this, R.color.colorPrimary),
+                ContextCompat.getColor(this, R.color.white));
+
+        tabColorFade.setDuration(1000);
+        tabColorFade.start();
+
+        textView.setTextColor(ContextCompat.getColor(this, R.color.black));
+    }
+
     private void initializeBottomSheet() {
         View bottomSheet = findViewById(R.id.layout_panel);
 
@@ -200,6 +236,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_DRAGGING:
                         if (fabShown) {
                             mFab.startAnimation(shrinkAnimation);
+                            darkenToolbarColor();
                         } else {
                             mFab.startAnimation(growAnimation);
                         }
@@ -207,6 +244,7 @@ public class MapsActivity extends FragmentActivity implements
                     case BottomSheetBehavior.STATE_COLLAPSED:
                         mFab.setVisibility(View.VISIBLE);
                         fabShown = true;
+                        lightenToolbarColor();
                         break;
                     case BottomSheetBehavior.STATE_EXPANDED:
                         mFab.setVisibility(View.INVISIBLE);
@@ -299,7 +337,7 @@ public class MapsActivity extends FragmentActivity implements
 
 
 
-    // 현재위치 버튼 enable.
+    // 현재위치 enable.
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
