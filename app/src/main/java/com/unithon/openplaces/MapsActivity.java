@@ -4,6 +4,9 @@ import android.*;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -32,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements
     private GoogleMap mMap;
     private FloatingActionButton mFab;
     private Toolbar mToolbar;
+    private BottomSheetBehavior mBottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,34 @@ public class MapsActivity extends FragmentActivity implements
         // set custom animation
         getWindow().setExitTransition(null);
         getWindow().setReenterTransition(null);
+
+        initializeBottomSheet();
+    }
+
+    private void initializeBottomSheet() {
+        View bottomSheet = findViewById(R.id.layout_panel);
+        mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBottomSheetBehavior.setHideable(true);
+//        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        mBottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState) {
+                    case (BottomSheetBehavior.STATE_COLLAPSED):
+                        break;
+
+                    case (BottomSheetBehavior.STATE_HIDDEN):
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
 
 
