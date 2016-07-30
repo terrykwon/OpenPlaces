@@ -1,8 +1,12 @@
 package com.unithon.openplaces;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -23,7 +27,6 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,12 +38,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.common.collect.Lists;
 import com.naver.speech.clientapi.SpeechConfig;
+import com.unithon.openplaces.network.Constant;
+import com.unithon.openplaces.network.HttpFactory;
+import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
 import com.unithon.openplaces.speech.SampleSpeechActivity;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback {
@@ -117,22 +132,40 @@ public class MapsActivity extends FragmentActivity implements
             }
         });
         String[] countries = getResources().getStringArray(R.array.category);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,countries);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, countries);
         searchText.setAdapter(adapter);
         searchText.setThreshold(1);
 
-        // enter
+        // TODO enter
         searchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    Log.d("test : ", "testtest");
-                    Toast.makeText(MapsActivity.this, "testtest", Toast.LENGTH_LONG).show();
-                    return true;
-                }
-                return false;
-            }
-        });
+                                                 @Override
+                                                 public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                                                     if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                                         String title = searchText.getText().toString();
+                                                         String region = "상암동";
+                                                         Location location = mMap.getMyLocation();
+                                                         Call<List<SearchResponse>> call = HttpFactory.search().search(title, "" + location.getLatitude() + "," + location.getLongitude(), region);
+
+                                                         call.enqueue(new Callback<List<SearchResponse>>() {
+                                                             @Override
+                                                             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
+                                                                 if (response.isSuccessful()) {
+                                                                     List<SearchResponse> responses = response.body();
+                                                                     Log.d("testtest", responses.toString());
+                                                                 }
+                                                             }
+
+                                                             @Override
+                                                             public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
+                                                                 Log.d("search error:", " search error");
+                                                             }
+                                                         });
+                                                         return true;
+                                                     }
+                                                     return false;
+                                                 }
+                                             }
+        );
 
         // set custom animation
         getWindow().setExitTransition(null);
@@ -252,7 +285,6 @@ public class MapsActivity extends FragmentActivity implements
     }
 
 
-
     // 현재위치 버튼 enable.
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -305,7 +337,8 @@ public class MapsActivity extends FragmentActivity implements
                 .title("Seoul")
                 .snippet("Population: 4,627,300")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.marker_red))
-                .infoWindowAnchor(0.5f, 0.5f));mMap.addMarker(new MarkerOptions()
+                .infoWindowAnchor(0.5f, 0.5f));
+        mMap.addMarker(new MarkerOptions()
                 .position(new LatLng(37.57, 126.92))
                 .title("Seoul")
                 .snippet("Population: 4,627,300")
@@ -314,8 +347,6 @@ public class MapsActivity extends FragmentActivity implements
 
 
     }
-
-
 
 
 //=====================ookoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo

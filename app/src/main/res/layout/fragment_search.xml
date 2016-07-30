@@ -2,39 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:orientation="vertical"
     tools:activity=".SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_search_row_top_margin"
             android:orientation="horizontal">
+
             <LinearLayout
+                android:id="@+id/ll_food_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_food"/>
+                        android:src="@drawable/icon_food" />
                 </RelativeLayout>
 
                 <TextView
@@ -42,28 +47,31 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="Food"/>
+                    android:text="Food" />
             </LinearLayout>
 
 
             <LinearLayout
+                android:id="@+id/ll_coffee_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_coffee"/>
+                        android:src="@drawable/icon_coffee" />
                 </RelativeLayout>
 
                 <TextView
@@ -71,27 +79,30 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="Cafe"/>
+                    android:text="Cafe" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_beauty_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_beauty"/>
+                        android:src="@drawable/icon_beauty" />
                 </RelativeLayout>
 
                 <TextView
@@ -99,21 +110,23 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="Beauty"/>
+                    android:text="Beauty" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_laundry_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_search_row_top_margin"
             android:orientation="horizontal">
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -121,12 +134,13 @@
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_laundry"/>
+                        android:src="@drawable/icon_laundry" />
                 </RelativeLayout>
 
                 <TextView
@@ -134,16 +148,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="Laundry"/>
+                    android:text="Laundry" />
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_print_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -151,12 +166,13 @@
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_print"/>
+                        android:src="@drawable/icon_print" />
                 </RelativeLayout>
 
                 <TextView
@@ -164,15 +180,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="Print"/>
+                    android:text="Print" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_etc_search"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginLeft="@dimen/activity_search_button_left_right_margin"
                 android:layout_marginRight="@dimen/activity_search_button_left_right_margin"
+                android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -180,12 +197,13 @@
                     android:layout_width="@dimen/activity_search_icon_size"
                     android:layout_height="@dimen/activity_search_icon_size"
                     android:padding="@dimen/activity_search_icon_padding">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
-                        android:src="@drawable/icon_etc"/>
+                        android:src="@drawable/icon_etc" />
                 </RelativeLayout>
 
                 <TextView
@@ -193,7 +211,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/activity_search_text_top_margin"
                     android:gravity="center"
-                    android:text="etc."/>
+                    android:text="etc." />
 
             </LinearLayout>
         </LinearLayout>

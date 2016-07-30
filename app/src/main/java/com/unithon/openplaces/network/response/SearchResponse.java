@@ -13,6 +13,8 @@ public class SearchResponse {
     private List<ImagesInfo> images = new ArrayList<>();
     private String status;
     private String link;
+    private Double lat;
+    private Double lng;
     private long mapX;
     private long mapY;
     private String category;
@@ -20,6 +22,70 @@ public class SearchResponse {
     private long openAt;
     private String description;
 
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTel(String tel) {
+        this.tel = tel;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setImages(List<ImagesInfo> images) {
+        this.images = images;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public void setMapX(long mapX) {
+        this.mapX = mapX;
+    }
+
+    public void setMapY(long mapY) {
+        this.mapY = mapY;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCloseAt(long closeAt) {
+        this.closeAt = closeAt;
+    }
+
+    public void setOpenAt(long openAt) {
+        this.openAt = openAt;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getTitle() {
         return title;
