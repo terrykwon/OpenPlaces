@@ -177,6 +177,7 @@ public class MapsActivity extends FragmentActivity implements
                                                                  if (response.isSuccessful()) {
                                                                      List<SearchResponse> responses = response.body();
                                                                      Log.d("testtest", responses.toString());
+                                                                     renderMarkers(responses);
                                                                  }
                                                              }
 
@@ -322,7 +323,7 @@ public class MapsActivity extends FragmentActivity implements
         return responses;
     }
 
-    private void renderMarkers(ArrayList<SearchResponse> responses) {
+    private void renderMarkers(List<SearchResponse> responses) {
         for (SearchResponse r : responses) {
             LatLng latLng = new LatLng(r.getLat(), r.getLng());
             mMap.addMarker(new MarkerOptions()
