@@ -1,15 +1,8 @@
 package com.unithon.openplaces;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Criteria;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
+import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -47,22 +40,17 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.common.collect.Lists;
 import com.naver.speech.clientapi.SpeechConfig;
-import com.unithon.openplaces.network.Constant;
 import com.unithon.openplaces.network.HttpFactory;
-import com.unithon.openplaces.network.response.DummyDatabase;
 import com.unithon.openplaces.network.response.SearchResponse;
 import com.unithon.openplaces.speech.AudioWriterPCM;
 import com.unithon.openplaces.speech.NaverRecognizer;
 import com.unithon.openplaces.speech.SampleSpeechActivity;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -231,6 +219,17 @@ public class MapsActivity extends FragmentActivity implements
 
                     naverRecognizer.getSpeechRecognizer().stop();
                 }
+            }
+        });
+
+        //bottom sheet call set
+        final LinearLayout callLayout = (LinearLayout) findViewById(R.id.bottomsheet_call);
+        callLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView telephone = (TextView) callLayout.findViewById(R.id.Telephone);
+                String number = telephone.getText().toString();
+                call(number);
             }
         });
     }

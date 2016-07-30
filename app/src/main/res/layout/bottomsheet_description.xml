@@ -86,6 +86,7 @@
 
 
     <LinearLayout
+        android:id="@+id/bottomsheet_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="16dp">
