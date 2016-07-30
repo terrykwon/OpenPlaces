@@ -1,22 +1,17 @@
 package com.unithon.openplaces;
 
-import android.*;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.transition.Slide;
-import android.transition.Transition;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -30,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.unithon.openplaces.speech.SampleSpeechActivity;
 
 public class MapsActivity extends FragmentActivity implements
         OnMapReadyCallback {
@@ -64,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements
 //                overridePendingTransition(R.anim.slide_up, R.anim.slide_up);
 
                 ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MapsActivity.this);
-                Intent intent = new Intent(MapsActivity.this, SampleSearchActivity.class);
+                Intent intent = new Intent(MapsActivity.this, SampleSpeechActivity.class);
                 startActivity(intent, options.toBundle());
             }
         });
