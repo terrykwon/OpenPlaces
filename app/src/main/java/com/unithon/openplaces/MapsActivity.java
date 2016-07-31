@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
@@ -134,7 +135,8 @@ public class MapsActivity extends FragmentActivity implements
 
                 if (STATE == STATE_VIEWING_MAP) {
                     // Create new fragment and transaction
-                    Fragment newFragment = SearchFragment.newInstance();
+                    SearchFragment newFragment = SearchFragment.newInstance();
+                    newFragment.setActivty(MapsActivity.this);
                     FragmentTransaction transaction = getSupportFragmentManager()
                             .beginTransaction();
 
@@ -161,36 +163,7 @@ public class MapsActivity extends FragmentActivity implements
                                                  @Override
                                                  public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
                                                      if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                                                         zoomToMyLocation();
-                                                         getSupportFragmentManager().popBackStack();
-                                                         STATE = STATE_VIEWING_MAP;
-//                                                         getWindow().setSoftInputMode(
-//                                                                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
-//                                                         );
-                                                         hideKeyboard(MapsActivity.this);
-                                                         mMap.clear();
-                                                         placeInfoMap.clear();
-
-                                                         String title = searchText.getText().toString();
-                                                         String region = "상암동";
-                                                         Location location = mMap.getMyLocation();
-                                                         Call<List<SearchResponse>> call = HttpFactory.search().search(title, location.getLatitude(), location.getLongitude(), region);
-
-                                                         call.enqueue(new Callback<List<SearchResponse>>() {
-                                                             @Override
-                                                             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
-                                                                 if (response.isSuccessful()) {
-                                                                     List<SearchResponse> responses = response.body();
-                                                                     Log.d("testtest", responses.toString());
-                                                                     renderMarkers(responses);
-                                                                 }
-                                                             }
-
-                                                             @Override
-                                                             public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
-                                                                 Log.d("search error:", " search error");
-                                                             }
-                                                         });
+                                                         realSearch(searchText.getText().toString());
 
                                                          return true;
                                                      }
@@ -246,6 +219,39 @@ public class MapsActivity extends FragmentActivity implements
                 TextView telephone = (TextView) callLayout.findViewById(R.id.Telephone);
                 String number = telephone.getText().toString();
                 call(number);
+            }
+        });
+    }
+
+    public void realSearch(String text) {
+        zoomToMyLocation();
+        getSupportFragmentManager().popBackStack();
+        STATE = STATE_VIEWING_MAP;
+//                                                         getWindow().setSoftInputMode(
+//                                                                 WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN
+//                                                         );
+        hideKeyboard(MapsActivity.this);
+        mMap.clear();
+        placeInfoMap.clear();
+
+        String title = text;
+        String region = "상암동";
+        Location location = mMap.getMyLocation();
+        Call<List<SearchResponse>> call = HttpFactory.search().search(title, location.getLatitude(), location.getLongitude(), region);
+
+        call.enqueue(new Callback<List<SearchResponse>>() {
+            @Override
+            public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
+                if (response.isSuccessful()) {
+                    List<SearchResponse> responses = response.body();
+                    Log.d("testtest", responses.toString());
+                    renderMarkers(responses);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
+                Log.d("search error:", " search error");
             }
         });
     }
@@ -631,10 +637,12 @@ public class MapsActivity extends FragmentActivity implements
         List<ImagesInfo> imgUrls = response.getImages();
         if(!imgUrls.isEmpty())
             Picasso.with(this).load(response.getImages().get(0).getLink()).into(image);
+        else
+            image.setBackgroundColor(Color.TRANSPARENT);
 
         PlaceNameTextView.setText(response.getTitle());
         PlacePhoneNumTextView.setText(response.getTel());
-        PlaceAddressTextView.setText(response.getAddress());
+        PlaceAddressTextView.setText(response.getAddress().replaceAll("<[^>]*>",""));
         String status = response.getStatus();
         PlaceOpenTextView.setText(status);
         if (status.equals("OPEN")) {

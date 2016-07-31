@@ -3,9 +3,11 @@ package com.unithon.openplaces;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 /**
@@ -13,11 +15,17 @@ import android.widget.LinearLayout;
  */
 public class SearchFragment extends Fragment {
 
+    MapsActivity activity;
+
     public static SearchFragment newInstance() {
         return new SearchFragment();
     }
 
-    private LinearLayout mLlFood, mLlCoffee, mLlBeauty, mLlLaundry, mlLPrint, mlLEtc;
+    public void setActivty(MapsActivity activty) {
+        this.activity = activty;
+    }
+
+    private ImageView mLlFood, mLlCoffee, mLlBeauty, mLlLaundry, mlLPrint, mlLEtc;
 
     @Nullable
     @Override
@@ -29,21 +37,23 @@ public class SearchFragment extends Fragment {
     }
 
     public void initResource(View view) {
-        mLlFood = (LinearLayout) view.findViewById(R.id.ll_food_search);
-        mLlCoffee = (LinearLayout) view.findViewById(R.id.ll_coffee_search);
-        mLlBeauty = (LinearLayout) view.findViewById(R.id.ll_beauty_search);
-        mLlLaundry = (LinearLayout) view.findViewById(R.id.ll_laundry_search);
-        mlLPrint = (LinearLayout) view.findViewById(R.id.ll_print_search);
-        mlLEtc = (LinearLayout) view.findViewById(R.id.ll_etc_search);
+        Log.e("init","Resource");
+        mLlFood = (ImageView) view.findViewById(R.id.category_food);
+        mLlCoffee = (ImageView) view.findViewById(R.id.category_cafe);
+        mLlBeauty = (ImageView) view.findViewById(R.id.category_beauty);
+        mLlLaundry = (ImageView) view.findViewById(R.id.category_laundry);
+        mlLPrint = (ImageView) view.findViewById(R.id.category_print);
+        mlLEtc = (ImageView) view.findViewById(R.id.category_etc);
     }
 
     public void initEvent() {
-        mLlFood.setOnClickListener(new OnClick("음식점"));
-        mLlCoffee.setOnClickListener(new OnClick("커피"));
-        mLlBeauty.setOnClickListener(new OnClick("뷰티"));
+        Log.e("init","Event");
+        mLlFood.setOnClickListener(new OnClick("식당"));
+        mLlCoffee.setOnClickListener(new OnClick("카페"));
+        mLlBeauty.setOnClickListener(new OnClick("헤어"));
         mLlLaundry.setOnClickListener(new OnClick("세탁소"));
-        mlLPrint.setOnClickListener(new OnClick("프린트"));
-        mlLEtc.setOnClickListener(new OnClick("기타"));
+        mlLPrint.setOnClickListener(new OnClick("인쇄소"));
+        mlLEtc.setOnClickListener(new OnClick(""));
     }
 
     public class OnClick implements View.OnClickListener {
@@ -56,7 +66,8 @@ public class SearchFragment extends Fragment {
         @Override
         public void onClick(View view) {
             // TODO
-
+            Log.e("category click",title);
+            activity.realSearch(title);
         }
     }
 }

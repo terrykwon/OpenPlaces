@@ -35,6 +35,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_food"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -67,6 +68,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_cafe"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -98,6 +100,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_beauty"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -136,6 +139,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_laundry"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -168,6 +172,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_print"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
@@ -199,6 +204,7 @@
                     android:padding="@dimen/activity_search_icon_padding">
 
                     <ImageView
+                        android:id="@+id/category_etc"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="?attr/selectableItemBackgroundBorderless"
