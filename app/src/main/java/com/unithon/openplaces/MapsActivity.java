@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -87,12 +89,16 @@ public class MapsActivity extends FragmentActivity implements
 
     private AutoCompleteTextView searchText;
 
+    private ProgressBar progressBar;
+
     // Result of query.
     private Map<String, SearchResponse> placeInfoMap = Maps.newHashMap();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        progressBar = (ProgressBar) findViewById(R.id.marker_progress);
 
         //check Manifest uses-permissions is on
         checkPermissions();
@@ -224,7 +230,10 @@ public class MapsActivity extends FragmentActivity implements
     }
 
     public void realSearch(String text) {
+        progressBar.setVisibility(View.VISIBLE);
+
         zoomToMyLocation();
+
         getSupportFragmentManager().popBackStack();
         STATE = STATE_VIEWING_MAP;
 //                                                         getWindow().setSoftInputMode(
@@ -242,6 +251,7 @@ public class MapsActivity extends FragmentActivity implements
         call.enqueue(new Callback<List<SearchResponse>>() {
             @Override
             public void onResponse(Call<List<SearchResponse>> call, Response<List<SearchResponse>> response) {
+                progressBar.setVisibility(View.INVISIBLE);
                 if (response.isSuccessful()) {
                     List<SearchResponse> responses = response.body();
                     Log.d("testtest", responses.toString());
@@ -251,7 +261,8 @@ public class MapsActivity extends FragmentActivity implements
 
             @Override
             public void onFailure(Call<List<SearchResponse>> call, Throwable t) {
-                Log.d("search error:", " search error");
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(MapsActivity.this, "검색에 오류가 발생하였습니다",Toast.LENGTH_SHORT).show();
             }
         });
     }
