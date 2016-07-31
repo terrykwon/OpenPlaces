@@ -635,10 +635,12 @@ public class MapsActivity extends FragmentActivity implements
 
         ImageView image = (ImageView) findViewById(R.id.bottomsheet_image);
         List<ImagesInfo> imgUrls = response.getImages();
-        if(!imgUrls.isEmpty())
+        if(!imgUrls.isEmpty()) {
             Picasso.with(this).load(response.getImages().get(0).getLink()).into(image);
-        else
-            image.setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            image.setImageResource(0);
+            Log.e("empty image","empty");
+        }
 
         PlaceNameTextView.setText(response.getTitle());
         PlacePhoneNumTextView.setText(response.getTel());

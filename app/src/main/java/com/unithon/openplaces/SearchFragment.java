@@ -50,7 +50,7 @@ public class SearchFragment extends Fragment {
         Log.e("init","Event");
         mLlFood.setOnClickListener(new OnClick("식당"));
         mLlCoffee.setOnClickListener(new OnClick("카페"));
-        mLlBeauty.setOnClickListener(new OnClick("헤어"));
+        mLlBeauty.setOnClickListener(new OnClick("미용"));
         mLlLaundry.setOnClickListener(new OnClick("세탁소"));
         mlLPrint.setOnClickListener(new OnClick("인쇄소"));
         mlLEtc.setOnClickListener(new OnClick(""));
