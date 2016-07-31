@@ -657,14 +657,17 @@ public class MapsActivity extends FragmentActivity implements
         PlacePhoneNumTextView.setText(response.getTel());
         PlaceAddressTextView.setText(response.getAddress().replaceAll("<[^>]*>",""));
         String status = response.getStatus();
-        PlaceOpenTextView.setText(status);
         if (status.equals("OPEN")) {
+            PlaceOpenTextView.setText(status);
             PlaceOpenTextView.setTextColor(getResources().getColor(R.color.green));
         } else if (status.equals("CLOSE")) {
+            PlaceOpenTextView.setText("CLOSED");
             PlaceOpenTextView.setTextColor(getResources().getColor(R.color.red));
         } else if (status.equals("BEFORE_ONE_HOUR")) {
+            PlaceOpenTextView.setText("CLOSING IN 1H");
             PlaceOpenTextView.setTextColor(getResources().getColor(R.color.yellow));
         } else {
+            PlaceOpenTextView.setText("NO INFO");
             PlaceOpenTextView.setTextColor(getResources().getColor(R.color.grey));
         }
 

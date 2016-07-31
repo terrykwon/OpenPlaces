@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="388dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     app:behavior_peekHeight="68dp"
@@ -28,7 +28,7 @@
 
         <TextView
             android:layout_marginRight="16dp"
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textSize="16dp"
             android:textColor="@color/green"
