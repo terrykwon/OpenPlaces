@@ -231,7 +231,6 @@ public class MapsActivity extends FragmentActivity implements
 
     public void realSearch(String text) {
         progressBar.setVisibility(View.VISIBLE);
-
         zoomToMyLocation();
 
         getSupportFragmentManager().popBackStack();
